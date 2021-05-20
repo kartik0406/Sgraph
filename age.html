@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SGraph</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  </head>
+  <body bgcolor="#F0FFF0">
+    <h1 style="color: rgb(16, 16, 88);margin-left: 2px;">IMPACT OF SOCIAL MEDIA ON EDUCATION IN THE COVID PANDEMIC DATA ANALYSIS</h1>
+   <a href="index.html"><button id="age" type="button" class="btn btn-dark" style="margin-left: 2px;">SURVEY STATS</button></a> 
+   <button id="line" type="button" class="btn btn-dark" style="margin-left: 2px;">Line chart</button></a> 
+    <canvas id="myChart" width="400" height="200"></canvas>
+
+    <script>
+        
+        var r=Math.floor(Math.random() * 2); 
+        var temparray=['bar','line'];
+        var temp=temparray[r];
+      // Data from: https://data.giss.nasa.gov/gistemp/
+      // Mean from: https://earthobservatory.nasa.gov/world-of-change/DecadalTemp
+
+      window.addEventListener('load', setup);
+
+      async function setup() {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const dataSurveys = await getData();
+        const myChart = new Chart(ctx, {
+          type: temp,
+          data: {
+            labels: dataSurveys.ques,
+            datasets: [
+              {
+                label: 'Facebook',
+                data: dataSurveys.option_a,
+                fill: false,
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                borderWidth: 1
+              },
+              {
+                label: 'Instagram',
+                data: dataSurveys.option_b,
+                fill: false,
+                borderColor: 'rgba(99, 132, 255, 1)',
+                backgroundColor: 'rgba(99, 132, 255, 0.5)',
+                borderWidth: 1
+              },
+              {
+                label: 'Whatsapp',
+                data: dataSurveys.option_c,
+                fill: false,
+                borderColor: 'rgba(99, 255, 132, 1)',
+                backgroundColor: 'rgba(99, 255, 132, 0.5)',
+                borderWidth: 1
+              },
+              {
+                label: 'Youtube',
+                data: dataSurveys.option_d,
+                fill: false,
+                borderColor: 'rgba(255, 0, 0,0.5)',
+                backgroundColor: 'rgba(255, 0, 0,0.5)',
+                borderWidth: 1
+              },
+              {
+                label: 'Pinterest',
+                data: dataSurveys.option_e,
+                fill: false,
+                borderColor: 'rgba(100, 22, 132, 1)',
+                backgroundColor: 'rgba(99, 2, 132, 0.5)',
+                borderWidth: 1
+              },
+              {
+                label: 'LinkedIn',
+                data: dataSurveys.option_f,
+                fill: false,
+                borderColor: 'rgba(0, 191, 255,0.8)',
+                backgroundColor: 'rgba(0, 191, 255,0.8)',
+                borderWidth: 1
+              },
+            ]
+          },
+          options: {}
+        });
+      }
+
+      async function getData() {
+        // const response = await fetch('testdata.csv');
+        const response = await fetch('age.csv');
+        //const response = await fetch('ZonAnn.Ts+dSST.csv');
+        const data = await response.text();
+        const ques = [];
+        const option_a = [];
+        const option_b = [];
+        const option_c = [];
+        const option_d = [];
+        const option_e = [];
+        const option_f = [];
+        const rows = data.split('\n').slice(1);
+        rows.forEach(row => {
+          const cols = row.split(',');
+          ques.push(cols[0]);
+          option_a.push(parseFloat(cols[1]));
+          option_b.push(parseFloat(cols[2]));
+          option_c.push(parseFloat(cols[3]));
+          option_d.push(parseFloat(cols[4]));
+          option_e.push(parseFloat(cols[5]));
+          option_f.push(parseFloat(cols[6]));
+       
+        });
+        return { ques, option_a, option_b, option_c, option_d, option_e, option_f };
+      }
+  
+        document.getElementById("line").addEventListener("click", function() {
+         location.reload()
+        });
+        </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
